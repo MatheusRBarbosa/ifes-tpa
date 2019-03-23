@@ -42,13 +42,7 @@ public class Dicionario<T> {
        this.len++;
     }
     
-    public boolean empty(){
-        if(this.len == 0)
-            return false;
-        return true;
-    }
-    
-    public Conteudo<T> findConteudo(String key){
+    private Conteudo<T> findConteudo(String key){
         int index = this.getIndex(key);
         if(!this.dicionario[index].isEmpty()){
             int i=0;
@@ -65,6 +59,15 @@ public class Dicionario<T> {
     
     public T findByKey(String key){
         return this.findConteudo(key).getConteudo();
+    }
+    
+    public void remove(String key){
+        int index = this.getIndex(key);
+        System.out.println(index);
+        if(!this.dicionario[index].isEmpty()){
+            this.dicionario[index].remove();
+            this.len--;
+        }
     }
     
 }

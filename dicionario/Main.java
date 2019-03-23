@@ -18,6 +18,8 @@ public class Main {
         dic.insert("123", "asdasdsad");
         System.out.println(dic.len());
         System.out.println(dic.findByKey("123"));
+        dic.remove("123");
+        System.out.println(dic.len());
                 
     }
 }
