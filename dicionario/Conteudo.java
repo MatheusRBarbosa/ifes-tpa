@@ -9,24 +9,24 @@ package exerciciostpa.dicionario;
  *
  * @author barbosa
  */
-public class Conteudo<T> {
-    private String key;
-    private T conteudo;
+public class Conteudo<K,V> {
+    private K key;
+    private V conteudo;
     
-    public Conteudo(String key, T conteudo){
+    public Conteudo(K key, V conteudo){
         this.conteudo = conteudo;
         this.key = key;
     }
 
-    public T getConteudo() {
+    public V getConteudo() {
         return conteudo;
     }
 
-    public String getKey() {
+    public K getKey() {
         return key;
     }
 
-    public void setConteudo(T conteudo) {
+    public void setConteudo(V conteudo) {
         this.conteudo = conteudo;
     }
     

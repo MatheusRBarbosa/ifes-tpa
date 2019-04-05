@@ -11,11 +11,13 @@ import java.util.LinkedList;
  *
  * @author barbosa
  */
-public class Dicionario<T> {
+public class Dicionario<K,V> {
     private LinkedList<Conteudo>[] dicionario;
+    private HashEngine hashEngine;
     private int len = 0;
     
     public Dicionario(){
+        this.hashEngine = new DefaultHashEngine();
         int tam = 200;
         this.dicionario = new LinkedList[tam];
         for(int i=0;i<tam;i++){
@@ -24,6 +26,17 @@ public class Dicionario<T> {
     }
     
     public Dicionario(int tam){
+        this.hashEngine = new DefaultHashEngine();
+        double fc = 0.75;
+        int len = (int)(tam/fc);
+        this.dicionario = new LinkedList[len];
+        for(int i=0;i<len;i++){
+            this.dicionario[i] = new LinkedList<>();
+        }
+    }
+    
+    public Dicionario(int tam, HashEngine hashEngine){
+        this.hashEngine = hashEngine;
         double fc = 0.75;
         int len = (int)(tam/fc);
         this.dicionario = new LinkedList[len];
@@ -36,21 +49,18 @@ public class Dicionario<T> {
         return this.len;
     }
     
-    public int getIndex(String key){
-        long hash = 0;
-        for(int i=0; i<key.length();i++){
-            hash += (int)key.charAt(i);
-        }
+    public int getIndex(K key){
+        Long hash = this.hashEngine.generateHash(key);
         return (int)(hash % this.dicionario.length);
     }
     
-    public void insert(String key, T item){
+    public void insert(K key, V item){
        int index = getIndex(key);
        this.dicionario[index].add(new Conteudo(key, item));
        this.len++;
     }
     
-    private Conteudo<T> findConteudo(String key){
+    private Conteudo<K,V> findConteudo(K key){
         int index = this.getIndex(key);
         if(!this.dicionario[index].isEmpty()){
             int i=0;
@@ -65,11 +75,11 @@ public class Dicionario<T> {
         return null;
     }
     
-    public T findByKey(String key){
+    public V findByKey(K key){
         return this.findConteudo(key).getConteudo();
     }
     
-    public void remove(String key){
+    public void remove(K key){
         int index = this.getIndex(key);
         System.out.println(index);
         if(!this.dicionario[index].isEmpty()){
