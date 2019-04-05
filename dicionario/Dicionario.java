@@ -15,6 +15,14 @@ public class Dicionario<T> {
     private LinkedList<Conteudo>[] dicionario;
     private int len = 0;
     
+    public Dicionario(){
+        int tam = 200;
+        this.dicionario = new LinkedList[tam];
+        for(int i=0;i<tam;i++){
+            this.dicionario[i] = new LinkedList<>();
+        }
+    }
+    
     public Dicionario(int tam){
         double fc = 0.75;
         int len = (int)(tam/fc);
@@ -68,6 +76,14 @@ public class Dicionario<T> {
             this.dicionario[index].remove();
             this.len--;
         }
+    }
+    
+    public int[] getColisoes(){
+        int[] colisoes = new int[this.dicionario.length];
+        for(int i=0; i<this.dicionario.length;i++){
+            colisoes[i] = this.dicionario[i].size();
+        }
+        return colisoes;
     }
     
 }
