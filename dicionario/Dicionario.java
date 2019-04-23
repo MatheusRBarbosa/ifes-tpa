@@ -50,9 +50,14 @@ public class Dicionario<K, V> {
         return this.len;
     }
 
-    public int getIndex(K key) {
+    private int getIndex(K key) {
         Long hash = this.hashEngine.generateHash(key);
         return (int) (hash % this.dicionario.length);
+    }
+    
+    private int getIndex(K key, int lenght) {
+        Long hash = this.hashEngine.generateHash(key);
+        return (int) (hash % lenght);
     }
 
     private int getMaiorLista() {
@@ -69,12 +74,21 @@ public class Dicionario<K, V> {
         
         int newTam = this.dicionario.length * 2;
         LinkedList<Conteudo>[] newDicionario = new LinkedList[newTam];
-        for (int i = 0; i < this.dicionario.length; i++) {
-            newDicionario[i] = this.dicionario[i];
-        }
-        for(int i = this.dicionario.length; i<newTam; i++){
+        
+        for(int i = 0; i<newTam; i++){
             newDicionario[i] = new LinkedList<>();
         }
+        
+        for(int j = 0; j<this.dicionario.length;j++){
+            if(this.dicionario[j] != null){
+                for(int k = 0; k<this.dicionario[j].size(); k++){
+                    K key = (K) this.dicionario[j].get(k).getKey();
+                    int index = getIndex(key, newTam);
+                    newDicionario[index].add(this.dicionario[j].get(k));
+                }
+            }
+        }
+        
         this.dicionario = newDicionario;
     }
 
