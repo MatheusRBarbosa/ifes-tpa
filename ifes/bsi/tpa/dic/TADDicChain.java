@@ -48,6 +48,15 @@ public class TADDicChain {
             this.dicionario[i] = new LinkedList<>();
         }
     }
+    
+    public TADDicChain(int tam, Hash_engine hashEngine){
+        this.hashEngine = hashEngine;
+        this.sizeVetBuckets = (int) (tam / this.fator_de_carga);
+        this.dicionario = new LinkedList[this.sizeVetBuckets];
+        for (int i = 0; i < this.sizeVetBuckets; i++) {
+            this.dicionario[i] = new LinkedList<>();
+        }
+    }
 
     public int size() {
         return this.size;
@@ -155,7 +164,7 @@ public class TADDicChain {
         int index = this.getIndex(key);
         Object item = findElement(key);
         if(item != null){
-            this.dicionario[index].remove();
+            this.dicionario[index].remove(item);
             this.size--;
             return item;
         }
@@ -171,6 +180,25 @@ public class TADDicChain {
         return colisoes;
     }
     public TADDicChain clone(){
-        return this;
+        TADDicChain newDic = new TADDicChain(this.sizeVetBuckets,this.hashEngine);
+        TDicItem item;
+        for(Object k : this.keys()){
+            item = this.findConteudo(k);
+            newDic.insertItem(item.getKey(), item.getConteudo());
+        }
+        return newDic;
+    }
+    
+    public boolean equals(TADDicChain dic){
+        if(this.size() != dic.size())
+            return false;
+        for (Object key : this.keys()) {                     // procura cada chave deste dicionário, no outro
+            Object value = dic.findElement(key);
+            if (dic.NO_SUCH_KEY())
+                return false;     // se não encontrar algo -> dicionários diferentes
+            if (value != this.findElement(key)) 
+                return false;  // se encontrar, compara os valores obtidos
+        }
+        return true;
     }
 }
