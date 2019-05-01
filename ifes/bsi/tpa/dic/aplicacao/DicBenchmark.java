@@ -147,13 +147,13 @@ public class DicBenchmark {
 		
 		System.out.print("\nTestando a integridade chave/conteúdo..");
 		
-        /* Obtem um conjunto de entradas do HashMap (chaves e dados). *//*
+        /* Obtem um conjunto de entradas do HashMap (chaves e dados). */
         Set set = hm.entrySet();
       
-        /* Constrói um iterator para percorrer o conjunto. *//*
+        /* Constrói um iterator para percorrer o conjunto. */
         Iterator it = set.iterator();
       
-        /* Para cada chave e dado extraído do HashMap, verifica se a chave obtém o memso dado do TADDicChain. *//*
+        /* Para cada chave e dado extraído do HashMap, verifica se a chave obtém o memso dado do TADDicChain. */
         int n = 0;
         while(it.hasNext()) {
            Map.Entry me = (Map.Entry)it.next();
@@ -167,7 +167,7 @@ public class DicBenchmark {
 			   System.exit(0);
 		   }		   
 		   n++;
-        } /* while(it.. *//*
+        } /* while(it.. */
        
         System.out.println("teste concluído com sucesso.");
         System.out.println(n + " relações chaves/conteúdos verificadas corretamente!");
@@ -185,6 +185,6 @@ public class DicBenchmark {
 		System.out.println(" .keys();");
 		System.out.println(" .elements();");
 		System.out.println(" .clone();");
-		System.out.println(" .equals();");*/
+		System.out.println(" .equals();");
     } // fim main
 } // fim classe DicBenchmark
