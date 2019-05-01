@@ -9,24 +9,24 @@ package ifes.bsi.tpa.dic;
  *
  * @author barbosa
  */
-public class TDicItem<K,V> {
-    private K key;
-    private V conteudo;
+public class TDicItem {
+    private Object key;
+    private Object conteudo;
     
-    public TDicItem(K key, V conteudo){
+    public TDicItem(Object key, Object conteudo){
         this.conteudo = conteudo;
         this.key = key;
     }
 
-    public V getConteudo() {
+    public Object getConteudo() {
         return conteudo;
     }
 
-    public K getKey() {
+    public Object getKey() {
         return key;
     }
 
-    public void setConteudo(V conteudo) {
+    public void setConteudo(Object conteudo) {
         this.conteudo = conteudo;
     }
     
