@@ -11,6 +11,6 @@ package ifes.bsi.tpa.dic;
  */
 public abstract class Hash_engine {
     
-    public abstract Long generateHash(Object key); 
+    public abstract Long hash_func(Object key); 
     
 }

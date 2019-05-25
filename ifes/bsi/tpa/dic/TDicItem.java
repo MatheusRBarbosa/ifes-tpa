@@ -11,25 +11,35 @@ package ifes.bsi.tpa.dic;
  */
 public class TDicItem {
     private Object key;
-    private Object conteudo;
+    private Object dado;
+    private Long cach_hash;
     
-    public TDicItem(Object key, Object conteudo){
-        this.conteudo = conteudo;
+    public TDicItem(Object key, Object dado){
+        this.dado = dado;
         this.key = key;
     }
 
-    public Object getConteudo() {
-        return conteudo;
+    public Object getDado() {
+        return dado;
     }
 
     public Object getKey() {
         return key;
     }
 
-    public void setConteudo(Object conteudo) {
-        this.conteudo = conteudo;
+     public Long getCash_Hash(){
+        return this.cach_hash;
+    }
+        
+    public void setConteudo(Object dado) {
+        this.dado = dado;
     }
     
+    public void setCash_Hash(Long cach_hash){
+        this.cach_hash = cach_hash;
+    }
+    
+   
     
     
 }

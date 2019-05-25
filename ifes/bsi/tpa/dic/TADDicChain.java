@@ -22,7 +22,7 @@ public class TADDicChain {
 
     public TADDicChain() {
         this.hashEngine = new DefaultHashEngine();
-        this.sizeVetBuckets = 100;
+        this.sizeVetBuckets = 1024;
         this.dicionario = new LinkedList[this.sizeVetBuckets];
         for (int i = 0; i < this.sizeVetBuckets; i++) {
             this.dicionario[i] = new LinkedList<>();
@@ -41,7 +41,7 @@ public class TADDicChain {
 
     public TADDicChain(Hash_engine hashEngine) {
         this.hashEngine = hashEngine;
-        this.sizeVetBuckets = 100;
+        this.sizeVetBuckets = 1024;
         int size = (int) (this.sizeVetBuckets / this.fator_de_carga);
         this.dicionario = new LinkedList[size];
         for (int i = 0; i < size; i++) {
@@ -83,14 +83,34 @@ public class TADDicChain {
         }
         return list;
     }
+    
+    public LinkedList<Object> elements() {
+        LinkedList<Object> list = new LinkedList();
+        for (int i = 0; i < this.dicionario.length; i++) {
+            for (int j = 0; j < this.dicionario[i].size(); j++) {
+                list.add(this.dicionario[i].get(j).getDado());
+            }
+        }
+        return list;
+    }
+    
+    public LinkedList<Object> getItens() {
+        LinkedList<Object> list = new LinkedList();
+        for (int i = 0; i < this.dicionario.length; i++) {
+            for (int j = 0; j < this.dicionario[i].size(); j++) {
+                list.add((TDicItem)this.dicionario[i].get(j));
+            }
+        }
+        return list;
+    }
 
     private int getIndex(Object key) {
-        Long hash = this.hashEngine.generateHash(key);
+        Long hash = this.hashEngine.hash_func(key);
         return (int) (hash % this.dicionario.length);
     }
 
     private int getIndex(Object key, int lenght) {
-        Long hash = this.hashEngine.generateHash(key);
+        Long hash = this.hashEngine.hash_func(key);
         return (int) (hash % lenght);
     }
 
@@ -106,7 +126,7 @@ public class TADDicChain {
 
     private void redimensiona() {
 
-        int newTam = this.dicionario.length * 2;
+        int newTam = (int)((int)this.dicionario.length * 1.5);
         LinkedList<TDicItem>[] newDicionario = new LinkedList[newTam];
 
         for (int i = 0; i < newTam; i++) {
@@ -127,12 +147,22 @@ public class TADDicChain {
     }
 
     public void insertItem(Object key, Object item) {
-        int index = getIndex(key);
-        this.dicionario[index].add(new TDicItem(key, item));
-        this.size++;
-        if (this.getMaiorLista() >= (int) (this.dicionario.length * 0.5)) {
-            this.redimensiona();
+        if(key == null){
+            return;
         }
+        TDicItem itemFinded = this.findConteudo(key);
+        if(finded){
+            itemFinded.setConteudo(item);
+        }
+        else{
+            int index = getIndex(key);
+            this.dicionario[index].add(new TDicItem(key, item));
+            this.size++;
+            if (this.getMaiorLista() >= (int) (this.dicionario.length * 0.3)) {
+                this.redimensiona();
+            }
+        }
+        
     }
 
     private TDicItem findConteudo(Object key) {
@@ -155,7 +185,7 @@ public class TADDicChain {
     public Object findElement(Object key) {
         TDicItem item = this.findConteudo(key);
         if(finded)
-            return item.getConteudo();
+            return item.getDado();
         else
             return null;
     }
@@ -164,12 +194,16 @@ public class TADDicChain {
         int index = this.getIndex(key);
         Object item = findElement(key);
         if(item != null){
+            this.finded = true;
             this.dicionario[index].remove(item);
             this.size--;
             return item;
         }
-        else
+        else{
+            this.finded = false;
             return null;
+        }
+        
     }
 
     public int[] getColisoes() {
@@ -179,12 +213,15 @@ public class TADDicChain {
         }
         return colisoes;
     }
+    
     public TADDicChain clone(){
         TADDicChain newDic = new TADDicChain(this.sizeVetBuckets,this.hashEngine);
         TDicItem item;
-        for(Object k : this.keys()){
-            item = this.findConteudo(k);
-            newDic.insertItem(item.getKey(), item.getConteudo());
+        LinkedList<Object> keys = this.keys();
+        for(int i=0; i<keys.size(); i++){
+            Object key = keys.get(i);
+            item = this.findConteudo(key);
+            newDic.insertItem(item.getKey(), item.getDado());
         }
         return newDic;
     }
@@ -192,12 +229,15 @@ public class TADDicChain {
     public boolean equals(TADDicChain dic){
         if(this.size() != dic.size())
             return false;
-        for (Object key : this.keys()) {                     // procura cada chave deste dicionário, no outro
+        
+        LinkedList<Object> keys = this.keys();
+        for(int i=0; i<keys.size(); i++){
+            Object key = keys.get(i);
             Object value = dic.findElement(key);
             if (dic.NO_SUCH_KEY())
-                return false;     // se não encontrar algo -> dicionários diferentes
+                return false;
             if (value != this.findElement(key)) 
-                return false;  // se encontrar, compara os valores obtidos
+                return false;
         }
         return true;
     }

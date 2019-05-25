@@ -16,7 +16,7 @@ public class DefaultHashEngine extends Hash_engine{
     }
 
     @Override
-    public Long generateHash(Object key) {
+    public Long hash_func(Object key) {
         String newKey = key.toString();
         long hash = 0;
         for(int i=0; i<newKey.length();i++){
