@@ -46,15 +46,14 @@ public class TADMatriz {
     
     public Float setElem(int linha, int coluna, Float valor){
         if(valor == 0) return null;
-        if(linha == 0 || coluna == 0) return null;
         ChaveMatriz chave = this.findChaveMatriz(linha, coluna);
-       
         if(chave == null){
             chave = new ChaveMatriz(linha, coluna);
             this.chaves.add(chave);
             dados.insertItem(chave, valor);
             return valor;
         }
+        dados.insertItem(chave, valor);
         return null;
     }
     
@@ -96,5 +95,30 @@ public class TADMatriz {
             return result;
         }
         return null;
+    }
+    
+    public TADMatriz multi(TADMatriz m){
+        if(this.colunas != m.linhas) return null;
+        TADMatriz result = new TADMatriz(this.linhas, m.colunas);
+        for(int i=1; i<=this.linhas;i++){
+            for(int j=1;j<=m.colunas;j++){
+                for(int k=1;k<=this.colunas;k++){
+                    Float e = result.getElem(i, j) + (this.getElem(i, k) * m.getElem(k, j));
+                    result.setElem(i, j, e);
+                }
+            }
+        }
+        return result;
+    }
+    
+    public TADMatriz transposta(){
+        TADMatriz result = new TADMatriz(this.colunas, this.linhas);
+        for(int i=1;i<=this.linhas;i++){
+            for(int j=1;j<=this.colunas;j++){
+                Float elem = this.getElem(i, j);
+                result.setElem(j, i, elem);
+            }
+        }
+        return result;
     }
 }
