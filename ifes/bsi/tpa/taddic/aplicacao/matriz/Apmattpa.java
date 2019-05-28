@@ -8,6 +8,9 @@ package ifes.bsi.tpa.taddic.aplicacao.matriz;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *
@@ -18,22 +21,30 @@ public class Apmattpa {
         System.out.println("====== Programa iniciado ======\n");
         BufferedReader br = null;
         FileReader fr = null;
-        String nome_arq = "E:\\BACKUP 04 - 10\\Desktop\\ativ-1-tpa-taddic\\bdaritmat.csv"; //Caminho do arquivo com operacoes
-        String arqPath = "E:\\BACKUP 04 - 10\\Desktop\\ativ-1-tpa-taddic\\bdmatrizes\\"; //Caminho da pasta com as matrizes
+        
+        String csvFile = "bdaritmat.csv";
+        
+        Path relativePath = FileSystems.getDefault().getPath("src","ifes","bsi","tpa","taddic","aplicacao","matriz",csvFile); // Arquivo csv com as operacoes
+        String csvPath = relativePath.toAbsolutePath().toString();
+        
+        Path relativeMatPath = FileSystems.getDefault().getPath("src","ifes","bsi","tpa","taddic","aplicacao","matriz","bdmatrizes");
+        String matFiles = relativeMatPath.toAbsolutePath().toString();
+        
         String arqMatriz;
         
         
         
-        fr = new FileReader(nome_arq);
+        fr = new FileReader(csvPath);
         br = new BufferedReader(fr);
         String line = br.readLine();
         arqMatriz = line+".txt";
-        TADMatriz matriz = TADMatriz.carrega(arqPath+arqMatriz);
+        TADMatriz matriz = TADMatriz.carrega(matFiles+"/"+arqMatriz);
         TADMatriz matrizAux;
-        System.out.println("Carregando arquivo: "+arqPath+arqMatriz);
+        System.out.println("Carregando arquivo: "+matFiles+"/"+arqMatriz);
         System.out.println("================ Matriz Inicial ================");
-        matriz.imprimeMatriz();
+        //matriz.imprimeMatriz();
         
+        Float multiplicador;
         
         line = br.readLine();
         while( line != null){
@@ -41,28 +52,30 @@ public class Apmattpa {
             switch (splited[0]){
                 case "+":
                     arqMatriz = splited[1]+".txt";
-                    matrizAux = TADMatriz.carrega(arqPath+arqMatriz);
+                    matrizAux = TADMatriz.carrega(matFiles+"/"+arqMatriz);
                     matriz = matriz.soma(matrizAux);
                     System.out.println("================ Matriz Somada ================");
                     matriz.imprimeMatriz();
                     break;
                 case "-":
                     arqMatriz = splited[1]+".txt";
-                    matrizAux = TADMatriz.carrega(arqPath+arqMatriz);
-                    matriz = matriz.subtracao(matrizAux);
+                    matrizAux = TADMatriz.carrega(matFiles+"/"+arqMatriz);
+                    multiplicador = Float.parseFloat("-1");
+                    matrizAux.vezesK(multiplicador);
+                    matriz = matriz.soma(matrizAux);
                     System.out.println("================ Matriz Subtraida ================");
                     matriz.imprimeMatriz();
                     break;
                 case "*":
                     if(splited[1].matches("[0-9]+")){
-                        Float multiplicador = Float.parseFloat(splited[1]);
+                        multiplicador = Float.parseFloat(splited[1]);
                         matriz.vezesK(multiplicador);
                         System.out.println("================ Matriz VezesK ================");
                         matriz.imprimeMatriz();
                     }
                     else{
                         arqMatriz = splited[1]+".txt";
-                        matrizAux = TADMatriz.carrega(arqPath+arqMatriz);
+                        matrizAux = TADMatriz.carrega(matFiles+"/"+arqMatriz);
                         matriz = matriz.multi(matrizAux);
                         System.out.println("================ Matriz Multiplicada ================");
                         matriz.imprimeMatriz();
@@ -78,7 +91,7 @@ public class Apmattpa {
      
         System.out.println("================ Matriz Final ================");
         matriz.imprimeMatriz();
-        matriz.salva(arqPath+"matrizFinal.txt");
+        matriz.salva(matFiles+"/matrizFinal.txt");
         
     }
 }

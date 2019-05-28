@@ -104,20 +104,6 @@ public class TADMatriz {
         return null;
     }
     
-    public TADMatriz subtracao(TADMatriz m){
-        if(m.quantColunas() == this.colunas && m.quantLinhas() == this.linhas){
-            TADMatriz result = new TADMatriz(this.linhas, this.colunas);
-            for(int i=1; i <= this.linhas;i++){
-                for(int j=1; j <= this.colunas;j++){
-                    Float e = this.getElem(i, j) - m.getElem(i, j);
-                    result.setElem(i, j, e);
-                }
-            }
-            return result;
-        }
-        return null;
-    }
-    
     public TADMatriz multi(TADMatriz m){
         if(this.colunas != m.linhas) return null;
         TADMatriz result = new TADMatriz(this.linhas, m.colunas);
