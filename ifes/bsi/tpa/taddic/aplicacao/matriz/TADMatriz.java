@@ -196,4 +196,26 @@ public class TADMatriz {
         bw = new BufferedWriter(fw);
         return nome_arq;
     }
+    
+    public void imprimeDiagonalPrincipal(){
+        for(int i=1; i <= this.linhas;i++){
+            for(int j=1; j <= this.colunas;j++){
+                if(i==j){
+                    System.out.print(this.getElem(i, j));
+                }
+            }
+            System.out.println("");
+        }
+    }
+    
+    public void imprimeDiagonalSecundaria(){
+        for(int i=1; i <= this.linhas;i++){
+            for(int j=1; j <= this.colunas;j++){
+                if(i+j == this.linhas+1){
+                    System.out.print(this.getElem(i, j));
+                }
+            }
+            System.out.println("");
+        }
+    }
 }

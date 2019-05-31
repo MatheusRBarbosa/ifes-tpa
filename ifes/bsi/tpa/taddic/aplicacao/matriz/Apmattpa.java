@@ -41,7 +41,7 @@ public class Apmattpa {
         TADMatriz matriz = TADMatriz.carrega(matFiles+"/"+arqMatriz);
         TADMatriz matrizAux;
         System.out.println("Carregando arquivo: "+matFiles+"/"+arqMatriz);
-        System.out.println("================ Matriz Inicial ================");
+        //System.out.println("================ Matriz Inicial ================");
         //matriz.imprimeMatriz();
         
         Float multiplicador;
@@ -54,8 +54,8 @@ public class Apmattpa {
                     arqMatriz = splited[1]+".txt";
                     matrizAux = TADMatriz.carrega(matFiles+"/"+arqMatriz);
                     matriz = matriz.soma(matrizAux);
-                    System.out.println("================ Matriz Somada ================");
-                    matriz.imprimeMatriz();
+                    //System.out.println("================ Matriz Somada ================");
+                    //matriz.imprimeMatriz();
                     break;
                 case "-":
                     arqMatriz = splited[1]+".txt";
@@ -63,35 +63,40 @@ public class Apmattpa {
                     multiplicador = Float.parseFloat("-1");
                     matrizAux.vezesK(multiplicador);
                     matriz = matriz.soma(matrizAux);
-                    System.out.println("================ Matriz Subtraida ================");
-                    matriz.imprimeMatriz();
+                    //System.out.println("================ Matriz Subtraida ================");
+                    //matriz.imprimeMatriz();
                     break;
                 case "*":
                     if(splited[1].matches("[0-9]+")){
                         multiplicador = Float.parseFloat(splited[1]);
                         matriz.vezesK(multiplicador);
-                        System.out.println("================ Matriz VezesK ================");
-                        matriz.imprimeMatriz();
+                        //System.out.println("================ Matriz VezesK ================");
+                        //matriz.imprimeMatriz();
                     }
                     else{
                         arqMatriz = splited[1]+".txt";
                         matrizAux = TADMatriz.carrega(matFiles+"/"+arqMatriz);
                         matriz = matriz.multi(matrizAux);
-                        System.out.println("================ Matriz Multiplicada ================");
-                        matriz.imprimeMatriz();
+                        //System.out.println("================ Matriz Multiplicada ================");
+                        //matriz.imprimeMatriz();
                     }
                     break;
                 default:
                     matriz = matriz.transposta();
-                    System.out.println("================ Matriz Transposta ================");
-                    matriz.imprimeMatriz();
+                    //System.out.println("================ Matriz Transposta ================");
+                    //matriz.imprimeMatriz();
             }
             line = br.readLine();
         }
-     
+        System.out.println("Arquivo de matriz salvo em: "+matFiles+"/resposta.txt");
         System.out.println("================ Matriz Final ================");
         matriz.imprimeMatriz();
-        matriz.salva(matFiles+"/matrizFinal.txt");
+        matriz.salva(matFiles+"/resposta.txt");
+        System.out.println("================ Diagonais ================");
+        System.out.println("== Diagonal principal ==");
+        matriz.imprimeDiagonalPrincipal();
+        System.out.println("== Diagonal secundaria ==");
+        matriz.imprimeDiagonalSecundaria();
         
     }
 }
