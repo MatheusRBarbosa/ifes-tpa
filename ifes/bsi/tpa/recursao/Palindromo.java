@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package exerciciostpa.recursao;
+package ifes.bsi.tpa.recursao;
 
-import static exerciciostpa.recursao.CalcularMenor.calcMenorRec;
-import static exerciciostpa.recursao.CalcularMenor.gerarLista;
+import static ifes.bsi.tpa.recursao.CalcularMenor.calcMenorRec;
+import static ifes.bsi.tpa.recursao.CalcularMenor.gerarLista;
 import java.util.ArrayList;
 
 /**

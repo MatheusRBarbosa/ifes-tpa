@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package exerciciostpa.recursao;
+package ifes.bsi.tpa.recursao;
 
 import java.util.ArrayList;
 

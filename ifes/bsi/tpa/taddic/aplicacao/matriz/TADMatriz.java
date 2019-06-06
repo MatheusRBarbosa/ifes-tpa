@@ -5,7 +5,7 @@
  */
 package ifes.bsi.tpa.taddic.aplicacao.matriz;
 
-import ifes.bsi.tpa.dic.TADDicChain;
+import ifes.bsi.tpa.taddic.TADDicChain;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
