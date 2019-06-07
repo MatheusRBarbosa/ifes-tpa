@@ -13,6 +13,10 @@ public class Main {
     public static void main(String[] args){
         System.out.println("Hello World");
         TADGrafo grafo = new TADGrafo("Grafinho");
+        grafo.insertVertex("A", 10);
+        grafo.insertVertex("B", 11);
+        grafo.insertVertex("C", 12);
+        //System.out.println(grafo.numVertex());
         grafo.printGrafo();
     }
 }

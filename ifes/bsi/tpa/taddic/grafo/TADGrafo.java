@@ -56,8 +56,46 @@ public class TADGrafo {
         }
     }
     
-    public Vertex insertVertex(String label, Object dado){
+    private Vertex getVertex(String label){
+        Vertex vertex = (Vertex)this.dicVertexes.findElement(label);
+        if(this.dicVertexes.NO_SUCH_KEY()) return null;
+        return vertex;
+    }
+    
+    private int geraIdVertex(){ 
+        int id = 0;
         
+        if(this.eliminados.isEmpty()) {
+            this.idVertex++;
+            id = this.idVertex; // Porque so aumenta a quantidade do id quando o lista eh vazia ?
+        }
+        else {
+            id = this.eliminados.get(0);
+            this.eliminados.remove();
+        }
+        
+        if(id < this.primVertex)
+            this.primVertex = id;
+        
+        if(id > this.ultVertice)
+            this.ultVertice = id;
+        
+        return id;
+    }
+    
+    public Vertex insertVertex(String label, Object dado){
+        Vertex vertex = getVertex(label);
+        if(vertex == null){
+            int id = geraIdVertex();
+            vertex = new Vertex(label, dado);
+            vertex.setId(id);
+            this.dicVertexes.insertItem(label, vertex);
+            this.qntVertexes++;
+        }
+        else{
+            vertex.setDado(dado);
+        }
+        return vertex;
     }
     
     

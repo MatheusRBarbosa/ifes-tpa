@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ifes.bsi.tpa.grafo;
+package ifes.bsi.tpa.taddic.grafo;
 
 /**
  *
@@ -12,6 +12,7 @@ package ifes.bsi.tpa.grafo;
 public class Vertex {
     private String label;
     private Object dado;
+    private int id;
     
     public Vertex(String label, Object dado){
         this.label = label;
@@ -25,6 +26,10 @@ public class Vertex {
     public String getLabel() {
         return label;
     }
+    
+    public int getId(){
+        return id;
+    }
 
     public void setDado(Object dado) {
         this.dado = dado;
@@ -32,5 +37,9 @@ public class Vertex {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
