@@ -16,7 +16,17 @@ public class Main {
         grafo.insertVertex("A", 10);
         grafo.insertVertex("B", 11);
         grafo.insertVertex("C", 12);
-        //System.out.println(grafo.numVertex());
-        grafo.printGrafo();
+        grafo.insertVertex("D", 13);
+        
+        grafo.insertEdge("A", "B", "ab", "A");
+        grafo.insertEdge("B", "C", "bc", "BA");
+        grafo.insertEdge("C", "A", "ca", "CA");
+        grafo.insertEdge("D", "A", "dd", "TE");
+        
+        
+        System.out.println("============= Print in matriz =============");
+        grafo.printGrafoMat();
+        //System.out.println("============= Print in grafo=============");
+        //grafo.printGrafo();
     }
 }

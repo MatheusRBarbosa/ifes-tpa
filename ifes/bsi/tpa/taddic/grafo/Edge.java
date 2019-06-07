@@ -15,6 +15,7 @@ package ifes.bsi.tpa.taddic.grafo;
 public class Edge {
     private String label;
     private Object dado;
+    private int id;
     
     public Edge(String label, Object dado){
         this.label = label;
@@ -28,6 +29,10 @@ public class Edge {
     public String getLabel() {
         return label;
     }
+    
+    public int getId(){
+        return this.id;
+    }
 
     public void setDado(Object dado) {
         this.dado = dado;
@@ -35,5 +40,9 @@ public class Edge {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
