@@ -18,15 +18,18 @@ public class Main {
         grafo.insertVertex("C", 12);
         grafo.insertVertex("D", 13);
         
-        grafo.insertEdge("A", "B", "ab", "A");
-        grafo.insertEdge("B", "C", "bc", "BA");
-        grafo.insertEdge("C", "A", "ca", "CA");
-        grafo.insertEdge("D", "A", "dd", "TE");
+        grafo.insertEdge("A", "B", "ab", 1);
+        grafo.insertEdge("B", "C", "bc", 2);
+        grafo.insertEdge("C", "A", "ca", 3);
+        grafo.insertEdge("D", "A", "dd", 4);
         
         
         System.out.println("============= Print in matriz =============");
         grafo.printGrafoMat();
         //System.out.println("============= Print in grafo=============");
         //grafo.printGrafo();
+        System.out.println("============= Print in matriz =============");
+        grafo.removeVertex("D");
+        grafo.printGrafoMat();
     }
 }

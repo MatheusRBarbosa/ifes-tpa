@@ -29,14 +29,14 @@ public class TADGrafo {
     private TADDicChain dicEdges;
     private TADDicChain dicVertexes;
     
-    private LinkedList<Integer> eliminados;
+    private LinkedList<Integer> vertexEliminados;
     
     public TADGrafo(String label){
         this.label = label;
         this.mat = new int[16][16];
         this.dicEdges = new TADDicChain();
         this.dicVertexes = new TADDicChain();
-        this.eliminados = new LinkedList<>();
+        this.vertexEliminados = new LinkedList<>();
     }
     
     public int numVertex(){
@@ -49,8 +49,8 @@ public class TADGrafo {
     
     public void printGrafoMat(){
         for(int i = this.primVertex; i <= this.ultVertice; i++){
-            if(!this.eliminados.contains(i)){
-                for(int j = this.primVertex; j < this.ultVertice; j++){
+            if(!this.vertexEliminados.contains(i)){
+                for(int j = this.primVertex; j <= this.ultVertice; j++){
                     System.out.print(mat[i][j]+" | ");
                 }
                 System.out.println();
@@ -67,13 +67,13 @@ public class TADGrafo {
     private int geraIdVertex(){ 
         int id = 0;
         
-        if(this.eliminados.isEmpty()) {
+        if(this.vertexEliminados.isEmpty()) {
             //this.idVertex++;
             id = this.idVertex++;
         }
         else {
-            id = this.eliminados.get(0);
-            this.eliminados.remove();
+            id = this.vertexEliminados.get(0);
+            this.vertexEliminados.remove();
         }
         
         if(id < this.primVertex)
@@ -112,7 +112,7 @@ public class TADGrafo {
             edge = new Edge(label, dado);
             //this.idEdge++;
             edge.setId(this.idEdge++);
-            this.dicEdges.insertItem(label, dado);
+            this.dicEdges.insertItem(label, edge);
             mat[vOrigem.getId()][vDestino.getId()] = edge.getId();
             this.qntEdges++;
         }
@@ -123,120 +123,127 @@ public class TADGrafo {
         return edge;
     }
     
-    public void printGrafo() {
-        ArrayList<String> al = new ArrayList<String>();
-        String s, labelOrigem = "", labelDestino = "", labelEdge = "";
+    public Edge getEdge(String origem, String destino){
+        Vertex vOrigem = getVertex(origem);
+        if(vOrigem == null) return null;
         
-        Vertex v;
-        Edge e;
+        Vertex vDestino = getVertex(destino);
+        if(vDestino == null) return null;
         
-        LinkedList<Object> lstVs = this.dicVertexes.keys();
-        LinkedList<Object> lstEs = this.dicEdges.keys();
+        int ide = mat[vOrigem.getId()][vDestino.getId()];
+        if (ide == 0) return null;
         
-        for(int i = this.primVertex; i <= this.ultVertice; i++) {
-            s = "";
-            
-            if(!this.eliminados.contains(i)) {
-                for(int j = 0; j < lstVs.size(); j++) {
-                    v = (Vertex)this.dicVertexes.findElement(lstVs.get(j));
-                    if(v.getId() == i) {
-                        labelOrigem = v.getLabel();
-                        break;
-                    }
-                }
-                
-                for(int k = this.primVertex; k <= this.ultVertice; k++) {
-                    if(!this.eliminados.contains(k)) {
-                        for(int m = 0; m < lstVs.size(); m++) {
-                            v = (Vertex)this.dicVertexes.findElement(lstVs.get(m));
-                            if(v.getId() == k) {
-                                labelDestino = v.getLabel();
-                                break;
-                            }
-                        }
-                        
-                        int idEdge = mat[i][k];
-                        
-                        if(idEdge != 0) {
-                            for(int m = 0; m < lstEs.size(); m++) {
-                                e = (Edge)this.dicEdges.findElement(lstEs.get(m));
-                                if(e.getId() == idEdge) {
-                                    labelEdge = e.getLabel();
-                                    break;
-                                }
-                            }
-                            
-                            s = labelOrigem + "--" + labelEdge + "-->" + labelDestino;
-                            al.add(s);
-                        }
-                    }
-                }
-            }
-        } //for int i...
+        LinkedList<Object> listEdges = this.dicEdges.elements();
         
-        //Island vertex treatment
-        for(int i = 0; i < lstVs.size(); i++) {
-            String lbl = (String)lstVs.get(i);
-            if(this.degree(lbl) == 0) {
-                al.add(lbl);
-            }
+        for(int i=0;i<listEdges.size();i++){
+            Edge e = (Edge)listEdges.get(i);
+            if(e.getId() == ide) return e;
         }
-        
-        Collections.sort(al);
-        
-        for(int n = 0; n < al.size(); n ++) {
-            System.out.println(al.get(n));
-        }
+        return null;
     }
-    
-    public Integer degree(String label) { //REFAZER
+    /*
+    public void printGrafo() {
+        LinkedList<Object> allVertexes = this.dicVertexes.elements();
+        LinkedList<Object> allEdges = this.dicEdges.elements();
+    }
+    */
+    public Integer degree(String label) {
         Integer in = this.inDegree(label);
         Integer out = this.outDegree(label);
         
-        if((in == null) || (out == null)) {
-            return null;
-        }
-        else {
-            return in + out;
-        }
+        if((in == null) || (out == null)) return null;
+        
+        return in + out;
     }
     
-    public Integer inDegree(String label) { // Refazer
-        Vertex v = (Vertex)this.dicVertexes.findElement(label);
-        if(this.dicVertexes.NO_SUCH_KEY()) {
-            return null;
+    public Integer inDegree(String label) {
+        Vertex vertex = (Vertex)this.dicVertexes.findElement(label);
+        if(this.dicVertexes.NO_SUCH_KEY()) return null;
+      
+        int idVertex = vertex.getId();
+        int grau = 0;
+
+        for(int i = this.primVertex; i <= this.ultVertice; i++) {
+            if((mat[i][idVertex] != 0) && !this.vertexEliminados.contains(i)) {
+                grau++;
+            }
         }
-        else {
-            int line = v.getId();
-            int grade = 0;
-            
-            for(int i = this.primVertex; i <= this.ultVertice; i++) {
-                if((mat[i][line] != 0) && !this.eliminados.contains(i)) {
-                    grade++;
+        return grau;
+    }
+    
+    public Integer outDegree(String label){ 
+        Vertex vertex = (Vertex)this.dicVertexes.findElement(label);
+        if(this.dicVertexes.NO_SUCH_KEY()) return null;
+        
+        int idVertex = vertex.getId();
+        int grau = 0;
+
+        for(int i = this.primVertex; i <= this.ultVertice; i++) {
+            if((mat[idVertex][i] != 0) && !this.vertexEliminados.contains(i)) {
+                grau++;
+            }
+        }
+        return grau;
+    }
+    
+    public Object removeEdge(String label){
+        Edge edge = (Edge)this.dicEdges.findElement(label);
+        if(this.dicEdges.NO_SUCH_KEY()) return null;
+        
+        int idEdge = edge.getId();
+        
+        for(int i = this.primVertex; i <= this.ultVertice ; i++){
+            if(!this.vertexEliminados.contains(i)){
+                for(int j = this.primVertex; j <= this.ultVertice; j++){
+                    if(this.mat[i][j] == idEdge){
+                        this.qntEdges--;
+                        this.mat[i][j] = 0;
+                        this.dicEdges.removeElement(label);
+                        return edge.getDado();
+                    }
                 }
             }
-            
-            return grade;
         }
+        return null;
     }
     
-    public Integer outDegree(String label){ // REFAZER
-        Vertex v = (Vertex)this.dicVertexes.findElement(label);
-        if(this.dicVertexes.NO_SUCH_KEY()) {
-            return null;
-        }
-        else {
-            int line = v.getId();
-            int grade = 0;
-            
-            for(int i = this.primVertex; i <= this.ultVertice; i++) {
-                if((mat[line][i] != 0) && !this.eliminados.contains(i)) {
-                    grade++;
+    public Object removeVertex(String label){
+        Vertex vertex = this.getVertex(label);
+        if(vertex == null) return null;
+        
+        int idVertex = vertex.getId();
+        
+        if(idVertex == this.primVertex){
+            for(int i = this.primVertex+1; i <= this.ultVertice; i++){
+                if(!this.vertexEliminados.contains(i)){
+                    this.primVertex = i;
+                    break;
                 }
             }
-            
-            return grade;
         }
+        
+        else if(idVertex == this.ultVertice){
+            for(int i = this.ultVertice-1; i > this.primVertex; i--){
+                if(!this.vertexEliminados.contains(i)){
+                    this.ultVertice = i;
+                    break;
+                }
+            }
+        }
+        
+        for(int i = this.primVertex; i <= this.ultVertice; i++){
+            if(this.mat[idVertex][i] != 0){
+                this.mat[idVertex][i] = 0;
+                this.qntEdges--;
+            }
+            if(this.mat[i][idVertex] != 0 && this.mat[idVertex][i] != this.mat[i][idVertex]){
+                this.mat[i][idVertex] = 0;
+                this.qntEdges--;
+            }
+        }
+        
+        this.vertexEliminados.add(idVertex);
+        this.qntVertexes--;
+        return this.dicVertexes.removeElement(label);
     }
-    
 }
