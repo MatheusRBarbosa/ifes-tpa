@@ -5,6 +5,8 @@
  */
 package ifes.bsi.tpa.taddic.grafo;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author barbosa
@@ -19,17 +21,21 @@ public class Main {
         grafo.insertVertex("D", 13);
         
         grafo.insertEdge("A", "B", "ab", 1);
+        
         grafo.insertEdge("B", "C", "bc", 2);
         grafo.insertEdge("C", "A", "ca", 3);
         grafo.insertEdge("D", "A", "dd", 4);
+        grafo.insertEdge("D", "B", "ad", 5);
         
         
         System.out.println("============= Print in matriz =============");
         grafo.printGrafoMat();
-        //System.out.println("============= Print in grafo=============");
-        //grafo.printGrafo();
-        System.out.println("============= Print in matriz =============");
-        grafo.removeVertex("D");
-        grafo.printGrafoMat();
+        
+        System.out.println("============= Print elements =============");
+        LinkedList<Object> list = grafo.incomingEdges("B");
+        for(int i=0;i<list.size();i++){
+            Edge e = (Edge)list.get(i);
+            System.out.println(e.getLabel());
+        }
     }
 }

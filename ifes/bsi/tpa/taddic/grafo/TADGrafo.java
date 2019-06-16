@@ -43,8 +43,16 @@ public class TADGrafo {
         return this.qntVertexes;
     }
     
+    public LinkedList<Object> vertices(){
+        return this.dicVertexes.elements();
+    }
+    
     public int numEdge(){
         return this.qntEdges;
+    }
+    
+    public LinkedList<Object> edges(){
+        return this.dicEdges.elements();
     }
     
     public void printGrafoMat(){
@@ -68,7 +76,6 @@ public class TADGrafo {
         int id = 0;
         
         if(this.vertexEliminados.isEmpty()) {
-            //this.idVertex++;
             id = this.idVertex++;
         }
         else {
@@ -141,12 +148,7 @@ public class TADGrafo {
         }
         return null;
     }
-    /*
-    public void printGrafo() {
-        LinkedList<Object> allVertexes = this.dicVertexes.elements();
-        LinkedList<Object> allEdges = this.dicEdges.elements();
-    }
-    */
+    
     public Integer degree(String label) {
         Integer in = this.inDegree(label);
         Integer out = this.outDegree(label);
@@ -245,5 +247,72 @@ public class TADGrafo {
         this.vertexEliminados.add(idVertex);
         this.qntVertexes--;
         return this.dicVertexes.removeElement(label);
+    }
+    
+    private Vertex inToVertex(int id){
+        LinkedList<Object> list = this.dicVertexes.elements();
+        
+        for(int i = 0; i < list.size(); i++){
+            Vertex vertex = (Vertex)list.get(i);
+            if(vertex.getId() == id) return vertex;
+        }
+        return null;
+    }
+    
+    public Vertex[] endVertices(String edgeLabel){
+        Edge edge = (Edge)this.dicEdges.findElement(edgeLabel);
+        if(this.dicEdges.NO_SUCH_KEY()) return null;
+        
+        int idEdge = edge.getId();
+        
+        for(int i = this.primVertex; i<=this.ultVertice; i++){
+            for(int j = this.primVertex; j<=this.ultVertice; j++){
+                if(this.mat[i][j] == idEdge){
+                    Vertex[] vertices = new Vertex[2];
+                    vertices[0] = this.inToVertex(i);
+                    vertices[1] = this.inToVertex(j);
+                    return vertices;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private Edge inToEdge(int id){
+        LinkedList<Object> list = this.dicEdges.elements();
+        
+        for(int i=0; i < list.size(); i++){
+            Edge edge = (Edge)list.get(i);
+            if(edge.getId() == id){
+                return edge;
+            }
+        }
+        return null;
+    }
+    
+    public LinkedList<Object> outgoingEdges(String labelVertex){
+        Vertex vertex = this.getVertex(labelVertex);
+        if(this.dicVertexes.NO_SUCH_KEY()) return null;
+        
+        LinkedList<Object> list = new LinkedList<>();
+        for(int i = this.primVertex; i<= this.ultVertice; i++){
+            if(this.mat[vertex.getId()][i] != 0){
+                list.add(this.inToEdge(this.mat[vertex.getId()][i]));
+            }
+        }
+        return list;
+    }
+    
+    public LinkedList<Object> incomingEdges(String labelVertex){
+        Vertex vertex = this.getVertex(labelVertex);
+        if(this.dicVertexes.NO_SUCH_KEY()) return null;
+        
+        LinkedList<Object> list = new LinkedList<>();
+        for(int i = this.primVertex; i <= this.ultVertice; i++){
+            if(this.mat[i][vertex.getId()] != 0){
+                list.add(this.inToEdge(this.mat[i][vertex.getId()]));
+            }
+        }
+        return list;
     }
 }
