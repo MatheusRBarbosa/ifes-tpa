@@ -45,4 +45,10 @@ public class Edge {
     public void setId(int id) {
         this.id = id;
     }
+    
+    public boolean equals(Edge e){
+        if(this.label != e.getLabel()) return false;
+        if(!this.dado.equals(e.getDado())) return false;
+        return true;
+    }
 }

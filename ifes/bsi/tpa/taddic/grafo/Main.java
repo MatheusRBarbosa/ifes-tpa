@@ -5,6 +5,7 @@
  */
 package ifes.bsi.tpa.taddic.grafo;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 /**
@@ -12,30 +13,24 @@ import java.util.LinkedList;
  * @author barbosa
  */
 public class Main {
-    public static void main(String[] args){
-        System.out.println("Hello World");
-        TADGrafo grafo = new TADGrafo("Grafinho");
-        grafo.insertVertex("A", 10);
-        grafo.insertVertex("B", 11);
-        grafo.insertVertex("C", 12);
-        grafo.insertVertex("D", 13);
+    public static void main(String[] args) throws IOException{
+        System.out.println("===== MAIN =====");
+        String file = "E:\\BACKUP 04 - 10\\Documents\\NetBeansProjects\\TPA\\src\\ifes\\bsi\\tpa\\taddic\\grafo\\Base-Grafos\\tgfmovies10.txt";
+        TADGrafoD g = new TADGrafoD("grafinho");
         
-        grafo.insertEdge("A", "B", "ab", 1);
+        g.insertVertex("A", 11);
+        g.insertVertex("B", 12);
+        g.insertVertex("C", 13);
         
-        grafo.insertEdge("B", "C", "bc", 2);
-        grafo.insertEdge("C", "A", "ca", 3);
-        grafo.insertEdge("D", "A", "dd", 4);
-        grafo.insertEdge("D", "B", "ad", 5);
+        g.insertEdge("A", "B", "ab", "###");
+        g.insertEdge("B", "B", "bb", "!!!");
+        g.insertEdge("B", "C", "bc", "%%%");
         
         
-        System.out.println("============= Print in matriz =============");
-        grafo.printGrafoMat();
-        
-        System.out.println("============= Print elements =============");
-        LinkedList<Object> list = grafo.incomingEdges("B");
-        for(int i=0;i<list.size();i++){
-            Edge e = (Edge)list.get(i);
-            System.out.println(e.getLabel());
-        }
+        TADGrafoD gclone = g.clone();
+        gclone.insertEdge("C", "A", "ac", 123);
+     
+        if(g.equals(gclone)) System.out.println(" === Igual ===");
+        else System.out.println(" === Diferente === ");
     }
 }
