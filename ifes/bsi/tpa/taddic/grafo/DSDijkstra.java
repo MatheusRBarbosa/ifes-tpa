@@ -12,7 +12,16 @@ import java.util.LinkedList;
  * @author User
  */
 public class DSDijkstra extends DataSet{
+    private int custos[];
+    private String antecessores[];
+    private LinkedList<Vertex> percorridos;
+    private int total;
 
+    public DSDijkstra(int custos[], String antecessores[]){
+        this.antecessores = antecessores;
+        this.custos = custos;
+    }
+    
     @Override
     public LinkedList<Vertex> caminho(String origem, String destino) {
         return null;
@@ -20,7 +29,14 @@ public class DSDijkstra extends DataSet{
 
     @Override
     public int custo(String origem, String destino) {
-        return 0;
+       return 0;
     }
     
+    public String[] getAntecessores(){
+        return this.antecessores;
+    }
+    
+    public int[] getCustos(){
+        return this.custos;
+    }
 }

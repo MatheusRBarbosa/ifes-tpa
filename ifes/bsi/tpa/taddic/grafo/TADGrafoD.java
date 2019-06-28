@@ -147,8 +147,30 @@ public class TADGrafoD {
         Edge edge = (Edge)this.dicLblEdge.findElement(label);
         if(this.dicLblEdge.NO_SUCH_KEY()){
             edge = new Edge(label, dado);
-            //this.idEdge++;
             edge.setId(this.idEdge++);
+            this.dicLblEdge.insertItem(label, edge);
+            mat[vOrigem.getId()][vDestino.getId()] = edge.getId();
+            this.qntEdges++;
+        }
+        else{
+            edge.setDado(dado);
+        }
+        
+        return edge;
+    }
+    
+    public Edge insertEdge(String origem, String destino, String label, Object dado, int peso){
+        Vertex vOrigem = this.getVertex(origem);
+        if(this.dicLblVertex.NO_SUCH_KEY()) return null;
+        
+        Vertex vDestino = this.getVertex(destino);
+        if(this.dicLblVertex.NO_SUCH_KEY()) return null;
+        
+        Edge edge = (Edge)this.dicLblEdge.findElement(label);
+        if(this.dicLblEdge.NO_SUCH_KEY()){
+            edge = new Edge(label, dado);
+            edge.setId(this.idEdge++);
+            edge.setPeso(peso);
             this.dicLblEdge.insertItem(label, edge);
             mat[vOrigem.getId()][vDestino.getId()] = edge.getId();
             this.qntEdges++;
@@ -481,7 +503,7 @@ public class TADGrafoD {
         for(int i=0; i<allEdges.size();i++){
             Edge e = allEdges.get(i);
             Vertex[] endEdges = this.endVertices(e.getLabel());
-            gClone.insertEdge(endEdges[0].getLabel(), endEdges[1].getLabel(), e.getLabel(), e.getDado());
+            gClone.insertEdge(endEdges[0].getLabel(), endEdges[1].getLabel(), e.getLabel(), e.getDado(), e.getPeso());
         }
          
         return gClone;
@@ -512,7 +534,10 @@ public class TADGrafoD {
                 }
                 else{
                     String edgeLabel = l[0]+'-'+l[1];
-                    g.insertEdge(l[0], l[1], edgeLabel, "");
+                    if(l.length < 3)
+                        g.insertEdge(l[0], l[1], edgeLabel, "");
+                    else // Se no arquivo TGF existir um terceiro campo com os pesos
+                        g.insertEdge(l[0], l[1], edgeLabel, "", Integer.parseInt(l[2]));
                 }
                 linha = arq.readLine();
             }

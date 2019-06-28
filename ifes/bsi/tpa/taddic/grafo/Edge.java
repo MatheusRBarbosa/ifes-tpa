@@ -16,6 +16,7 @@ public class Edge {
     private String label;
     private Object dado;
     private int id;
+    private int peso;
     
     public Edge(String label, Object dado){
         this.label = label;
@@ -34,6 +35,10 @@ public class Edge {
         return this.id;
     }
 
+    public int getPeso() {
+        return peso;
+    }
+
     public void setDado(Object dado) {
         this.dado = dado;
     }
@@ -44,6 +49,10 @@ public class Edge {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void setPeso(int peso){
+       this.peso = peso; 
     }
     
     public boolean equals(Edge e){
