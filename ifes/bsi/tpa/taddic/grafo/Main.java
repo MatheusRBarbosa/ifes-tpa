@@ -49,5 +49,19 @@ public class Main {
             System.out.println(custos[i]);
         }
        
+        System.out.println("===== BF Caminho I/F =====");
+        DSDijkstra bf = pg.cmBFord("A");
+        custos = bf.getCustos();
+        ant = bf.getAntecessores();
+        
+        for(int i=0;i<ant.length;i++){
+            System.out.println(ant[i]);
+        }
+        
+        System.out.println("===== BF Custo total =====");
+        for(int i=0;i<custos.length;i++){
+            System.out.println(custos[i]);
+        }
+        
     }
 }

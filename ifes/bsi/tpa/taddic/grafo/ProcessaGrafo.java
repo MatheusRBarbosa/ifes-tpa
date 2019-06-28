@@ -5,6 +5,7 @@
  */
 package ifes.bsi.tpa.taddic.grafo;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -133,27 +134,138 @@ public class ProcessaGrafo {
             }
             
             caminho = atualLocal;
-            //pesos = resp;
             if(!vizinhos.isEmpty()) vId = this.menor(resp,vizinhos);
         }
-        return this.createDSDijkstra(caminho[caminho.length-1]);
+        return this.createDSDijkstra(caminho[caminho.length-1], null);
         
     }
     
-    public DSDijkstra createDSDijkstra (String antecessores){
+    public DSDijkstra createDSDijkstra (String antecessores, int pesos[]){
         String ant[] = antecessores.split("-");
         int custos[] = new int[ant.length-1];
-        for(int i=0;i<ant.length-1;i++){
-            custos[i] = this.grafo.getEdge(ant[i], ant[i+1]).getPeso();
+        
+        if(pesos == null){
+            for(int i=0;i<ant.length-1;i++){
+                custos[i] = this.grafo.getEdge(ant[i], ant[i+1]).getPeso();
+            }
+            return new DSDijkstra(custos,ant);
         }
-        return new DSDijkstra(custos,ant);
+        else{
+            int i[] = new int[1];
+            i[0] = pesos[pesos.length-1];
+            return new DSDijkstra(i,ant);
+        }
+        
+        
     }
     
     public DSDijkstra cmBFord(String origem){
+        Vertex vertex = this.grafo.getVertex(origem);
+        if(vertex == null) return null;
+        
+        LinkedList<Vertex> vertices = this.grafo.vertices();
+        
+        int tam = vertices.size();
+        int[] pesos = new int[tam];
+        
+        String[] caminho = new String[tam];
+        
+        for(int i = 0; i < pesos.length; i++) {
+            pesos[i] = Integer.MAX_VALUE;
+        }
+        
+        int vId = vertex.getId();
+        caminho[vId] = vertex.getLabel();
+        pesos[vId] = 0;
+        
+        for(int i = 0; i < tam-1; i++) {
+            String[] atualLocal = caminho.clone();
+            int[] pesoAtual = pesos.clone();
+            for(int j = 0; j < pesoAtual.length; j++) {
+                if(pesoAtual[j] != Integer.MAX_VALUE) {
+                    Vertex v = vertices.get(j);
+                    int posVertex = v.getId();
+                    
+                    LinkedList<Vertex> adjacents = this.grafo.adjacentVertices(v.getLabel());
+                    for(int k=0;k<adjacents.size();k++) {
+                        Vertex vTemp = adjacents.get(k);
+                        Edge edge = this.grafo.getEdge(v.getLabel(), vTemp.getLabel());
+                        if (edge != null) {
+                            int pesoTotal = pesoAtual[posVertex] + edge.getPeso();
+                            if(pesoAtual[(vTemp.getId())] > pesoTotal){
+                                pesoAtual[vTemp.getId()] = pesoTotal;
+                                atualLocal[vTemp.getId()] = caminho[vId] + '-' + vTemp.getLabel();
+                            }
+                        }
+                    }
+                }
+            }
+            if(Arrays.equals(pesoAtual, pesos)) {
+                pesos = pesoAtual;
+                caminho = atualLocal;
+                break;
+            }
+            else {
+                pesos = pesoAtual;
+                caminho = atualLocal;
+            }
+        }
+        for(int i=0;i<caminho.length;i++) System.out.println(caminho[i]);
+        return this.createDSDijkstra(caminho[caminho.length-1], pesos);
+    }
+    
+    
+    public DSFloydW cmFWarshall(){ //incompleto
+        int numVertices = this.grafo.numVertices();
+        double [][] dist = new double [numVertices][numVertices];
+        for (double[] row : dist)
+            Arrays.fill(row, Double.POSITIVE_INFINITY);
+        
+        int linha = 0;
+        LinkedList<Vertex> oVertices = this.grafo.vertices();
+        
+        for(int i=0;i<oVertices.size();i++) {
+            Vertex vOrigem = oVertices.get(i);
+            int coluna = 0;
+            
+            LinkedList<Vertex> dVertices = this.grafo.vertices();
+            for(int j=0;j<dVertices.size();j++) {
+                Vertex vDestino = dVertices.get(j);
+                
+                if(vOrigem.getId() != vDestino.getId()) {
+                    Edge edge = this.grafo.getEdge(vOrigem.getLabel(), vDestino.getLabel());
+                    if( edge != null) {	
+                        dist[linha][coluna] = edge.getPeso();	
+                    }
+                    else {
+                        dist[linha][coluna] = Integer.MAX_VALUE;
+                    }		
+                }
+                else {
+                    dist[linha][coluna] =  0;
+                }	
+        	coluna++;
+            }
+            linha++;
+        }
+        
+        int[][] next = new int[numVertices][numVertices];
+        for (int i = 0; i < next.length; i++) {
+            for (int j = 0; j < next.length; j++)
+                if (i != j)
+                    next[i][j] = j + 1;
+        }
+ 
+        for (int k = 0; k < numVertices; k++)
+            for (int i = 0; i < numVertices; i++)
+                for (int j = 0; j < numVertices; j++)
+                    if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                        next[i][j] = next[i][k];
+                    }
+ 
+        //printResult(dist, next);
         return null;
     }
     
-    public DSFloydW cmFWarshall(){
-        return null;
-    }
 }

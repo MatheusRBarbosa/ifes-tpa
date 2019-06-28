@@ -13,6 +13,12 @@ import java.util.LinkedList;
  */
 public class DSFloydW extends DataSet {
 
+    private int [][] custos;
+
+    public DSFloydW (int [][] custos) {
+        this.custos = custos;
+    }
+    
     @Override
     public LinkedList<Vertex> caminho(String origem, String destino) {
         return null;
