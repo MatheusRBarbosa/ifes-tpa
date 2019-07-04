@@ -3,13 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ifes.bsi.tpa.Tree.Aplicacao;
+package ifes.bsi.tpa.arvore.Aplicacao;
 
 /**
  *
  * @author User
  */
-public class Board {
-    //Classe que usa a arvore para gerar o tabuleiro
-    //O tabuleiro de fato eh basicamente uma matriz
+public class Point {
+    public int x;
+    public int y;
+    
+    public Point(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
 }
